@@ -29,22 +29,20 @@ int main()
 
 		for(size_t i = 0; i < rect.size(); i++ ) {
 
-			//int i = 0;
 			rectangle(imagen,Point(rect[i].x, rect[i].y),Point(rect[i].x + rect[i].width, rect[i].y + rect[i].height),CV_RGB(0,255,0), 1);
-			//rectangle(imagen,Point(1,1),Point(11,11),CV_RGB(0,255,0), 2);
 
 			for(int y = rect[i].y+1; y < rect[i].y + rect[i].height; y++){
 			    for(int x = rect[i].x+1; x < rect[i].x + rect[i].width; x++){
 
-				Point3_<uchar>* p = imagen.ptr<Point3_<uchar> >(y,x);
-				p->x = 0;
-				p->y = 0;
-				if(p->z + 50 > 255){
-					p->z = 255;
-				}else{
-					p->z += 50;
-				}
-
+					Point3_<uchar>* p = imagen.ptr<Point3_<uchar> >(y,x);
+					cout << (int)p->z << "   ";
+					if(p->z *1.05 > 255){
+						p->z = 255;
+						cout << "SE FUE" << endl;
+					}else{
+						p->z *= 1.25;
+					}
+					cout << (int)p->z << endl;
 			    }
 			}
 
