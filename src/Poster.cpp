@@ -7,16 +7,13 @@ void Poster(int numLevels) {
 	const int ARRAY_SIZE = 256;
 	int levels[numLevels];
 
+	float jump = 255/numLevels;
+
+
 	/*if (numLevels != 1){
 		for (int i = 0; i < 256; i++){
 			levels[i] = 255 * (numLevels*i / 256) / (numLevels-1);
 		}
-	}*/
-
-	/*int jump = 240 / numLevels;
-
-	for(int i = 0; i < numLevels; i++) {
-		levels[i] = jump*i;
 	}*/
 
 	VideoCapture capture;
@@ -48,9 +45,14 @@ void Poster(int numLevels) {
 				p->y = levels[p->y];
 				p->x = levels[p->x];*/
 
-				p->x = (numLevels*p->x)/255;
-				p->y = (numLevels*p->y)/255;
-				p->z = (numLevels*p->z)/255;
+
+				int a = p->x/jump;
+				int b = p->y/jump;
+				int c = p->z/jump;
+
+				p->x = jump*a;
+				p->y = jump*b;
+				p->z = jump*c;
 
 			}
 		}

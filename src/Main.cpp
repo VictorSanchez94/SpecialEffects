@@ -4,7 +4,7 @@
 #include"BarrelDistorsion.h"
 
 int main() {
-	//changeFaceColor('b');
-	Poster(15);
+	changeFaceColor('b');
+	//Poster(6);
 	//barrelDistorsion(160, 240, 2, 2);
 }
