@@ -5,20 +5,20 @@
 using namespace std;
 using namespace cv;
 
+/*Metodo que selecciona la piel humana con un filtro y la cambia de
+ * color. Dependiendo de la tecla que se pulse se cambiara a un color
+ * o a otro. */
+
 void changeFaceColor(char color) {
 	VideoCapture capture;
-	//open capture object at location zero (default location for webcam)
-
-	capture.open(0);
+	capture.open(0); //0 es la webcam integrada y 1 es la webcam USB
 
 	//set height and width of capture frame
 	capture.set(CV_CAP_PROP_FRAME_WIDTH,320);
 	capture.set(CV_CAP_PROP_FRAME_HEIGHT,480);
 
 	Mat cameraFeed;
-
 	SkinDetector mySkinDetector;
-
 	Mat skinMat, HSVMat, output;
 
 	//start an infinite loop where webcam feed is copied to cameraFeed matrix
@@ -30,22 +30,13 @@ void changeFaceColor(char color) {
 		capture.read(cameraFeed);
 		imshow("REAL", cameraFeed);
 
-		//show the current image
-		//imshow("Original Image",cameraFeed);
-
 		skinMat= mySkinDetector.getSkin(cameraFeed);
-
 		imshow("Skin Image",skinMat);
-
 		cvtColor(cameraFeed,HSVMat,COLOR_BGR2HSV_FULL);
-		//imshow("HSV", HSVMat);
-
-
 
 		for(int x=0; x < skinMat.rows; x++){
 			for(int y=0; y < skinMat.cols; y++){
 				if(skinMat.at<uchar>(x,y) == 255){
-					//Point3_<uchar>* p = cameraFeed.ptr<Point3_<uchar> >(x,y);
 					Vec3b &p = HSVMat.at<Vec3b>(x,y);
 					if(color == 'b'){
 						p[0]=160;

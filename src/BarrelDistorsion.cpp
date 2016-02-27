@@ -3,91 +3,106 @@
 using namespace std;
 using namespace cv;
 
-void barrelDistorsion(double k) {
+void barrelDistorsion(double Cx,double Cy,double kx,double ky) {
 	VideoCapture capture;
 	//open capture object at location zero (default location for webcam)
 
 	capture.open(0);
 
 	//set height and width of capture frame
-	capture.set(CV_CAP_PROP_FRAME_WIDTH, 320);
-	capture.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
+	capture.set(CV_CAP_PROP_FRAME_WIDTH,320);
+	capture.set(CV_CAP_PROP_FRAME_HEIGHT,480);
 
-	double Cx, Cy;
+	Mat cameraFeed, aa;
 
-	Mat cameraFeed, output;
-
-	char key = 0;
+	//char key = 0;
 	while(1){
 		//store image to matrix
 		capture.read(cameraFeed);
-		imshow("Real Image", cameraFeed);
+		imshow("REAL", cameraFeed);
 
-		Cx = cameraFeed.cols / 2;
-		Cy = cameraFeed.rows / 2;
+		/*IplImage copy = cameraFeed;
+		IplImage* image = &copy;
 
-		output = barrelDistorsionAux(cameraFeed, Cx, Cy, k, k);
-		imshow("Distorsion", output);
+		aa = cvarrToMat(image);
+		imshow("2", aa);*/
 
-		key = cv::waitKey(1);
+		/*IplImage* image;
+		image = cvCreateImage(cvSize(cameraFeed.cols,cameraFeed.rows),8,3);
+		IplImage ipltemp=cameraFeed;
+		cvCopy(&ipltemp,image);*/
 
-		switch (key){
-			case 27:
-				exit(0);
-		}
+		/*IplImage* output = barrelDistorsionAux(image, Cx, Cy, kx, ky);
+		Mat output2 = cvarrToMat(output);
+		imshow("Distorsion", output2);*/
 	}
 
+
+
+	//IplImage* image = cvCloneImage(&(IplImage)cameraFeed);
 }
 
-Mat barrelDistorsionAux(Mat img, double Cx, double Cy, double kx, double ky) {
-    Mat mapx, mapy;
-    mapx.create( img.size(), CV_32FC1 );
-    mapy.create( img.size(), CV_32FC1 );
+IplImage* barrelDistorsionAux(IplImage* img, double Cx,double Cy,double kx,double ky) {
+    IplImage* mapx = cvCreateImage( cvGetSize(img), IPL_DEPTH_32F, 1 );
+    IplImage* mapy = cvCreateImage( cvGetSize(img), IPL_DEPTH_32F, 1 );
 
-    int w = img.cols;
-    int h = img.rows;
+    int w= img->width;
+    int h= img->height;
 
-    /*float r;
-
-    for (int y = 0; y < h; y++) {
-        for (int x = 0; x < w; x++) {
-        	r = sqrt(pow((x-Cx),2) + pow((y-Cy),2));
-            //mapx.at<float>(y,x) = Cx+(x-Cx)*(1+kx*((x-Cx)*(x-Cx)+(y-Cy)*(y-Cy)));
-        	mapx.at<float>(y,x) = Cy + (x-Cx) * (1 + kx*pow(r,2));
-        	//mapy.at<float>(y,x) = Cx + (y-Cy) * (1 + ky*pow(r,2));
+    float* pbuf = (float*)mapx->imageData;
+    for (int y = 0; y < h; y++)
+    {
+        for (int x = 0; x < w; x++)
+        {
+            float u= Cx+(x-Cx)*(1+kx*((x-Cx)*(x-Cx)+(y-Cy)*(y-Cy)));
+            *pbuf = u;
+            ++pbuf;
         }
     }
 
-    for (int y = 0;y < h; y++) {
-        for (int x = 0; x < w; x++) {
-        	//mapy.at<float>(y,x) = Cy+(y-Cy)*(1+ky*((x-Cx)*(x-Cx)+(y-Cy)*(y-Cy)));
-        	//mapy.at<float>(y,x) = Cy + (y-Cy) * (1 + ky * pow((y-Cy),2));
-        	mapy.at<float>(y,x) = Cx + (y-Cy) * (1 + ky*pow(r,2));
+    pbuf = (float*)mapy->imageData;
+    for (int y = 0;y < h; y++)
+    {
+        for (int x = 0; x < w; x++)
+        {
+            *pbuf = Cy+(y-Cy)*(1+ky*((x-Cx)*(x-Cx)+(y-Cy)*(y-Cy)));
+            ++pbuf;
+        }
+    }
+
+    /*float* pbuf = (float*)mapx->imageData;
+    for (int y = 0; y < h; y++)
+    {
+        int ty= y-Cy;
+        for (int x = 0; x < w; x++)
+        {
+            int tx= x-Cx;
+            int rt= tx*tx+ty*ty;
+
+            *pbuf = (float)(tx*(1+kx*rt)+Cx);
+            ++pbuf;
+        }
+    }
+
+    pbuf = (float*)mapy->imageData;
+    for (int y = 0;y < h; y++)
+    {
+        int ty= y-Cy;
+        for (int x = 0; x < w; x++)
+        {
+            int tx= x-Cx;
+            int rt= tx*tx+ty*ty;
+
+            *pbuf = (float)(ty*(1+ky*rt)+Cy);
+            ++pbuf;
         }
     }*/
 
-    for (int y = 0; y < h; y++) {
-        int ty= y-Cy;
-        for (int x = 0; x < w; x++) {
-            int tx= x-Cx;
-            int rt= tx*tx+ty*ty;
+    IplImage* temp = cvCloneImage(img);
+    cvRemap( temp, img, mapx, mapy );
+    cvReleaseImage(&temp);
+    cvReleaseImage(&mapx);
+    cvReleaseImage(&mapy);
 
-            mapx.at<float>(y,x) = (float)(tx*(1+kx*rt)+Cx);
-        }
-    }
-
-    for (int y = 0;y < h; y++) {
-        int ty= y-Cy;
-        for (int x = 0; x < w; x++) {
-            int tx= x-Cx;
-            int rt= tx*tx+ty*ty;
-
-            mapy.at<float>(y,x) = (float)(ty*(1+ky*rt)+Cy);
-        }
-    }
-
-    Mat output;
-    remap( img, output, mapx, mapy, INTER_LINEAR, BORDER_CONSTANT, Scalar(0,0,0) );
-
-    return output;
+    return img;
 }
