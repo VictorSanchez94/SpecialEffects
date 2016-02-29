@@ -7,10 +7,10 @@ using namespace cv;
 /*Metodo que crea un efecto de ruido de sal y pimienta.
  * Dependiendo del parametro percent se generara mas o
  * menos ruido. */
-void saltAndPepper(int percent) {
+void saltAndPepper(int camera, int percent) {
 
 	VideoCapture capture;
-	capture.open(1); //0 es la webcam integrada y 1 es la webcam USB
+	capture.open(camera); //0 es la webcam integrada y 1 es la webcam USB
 
 	//set height and width of capture frame
 	capture.set(CV_CAP_PROP_FRAME_WIDTH,600);

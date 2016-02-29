@@ -6,9 +6,9 @@ using namespace cv;
 /*Metodo que incrementa el contraste de cada frame capturado
  * por la webcam. Dependiendo del parametro alpha habra mas
  * o menos contraste. */
-void contrast(int alpha) {
+void contrast(int camera, int alpha) {
 	VideoCapture capture;
-	capture.open(1); //0 es la webcam integrada y 1 es la webcam USB
+	capture.open(camera); //0 es la webcam integrada y 1 es la webcam USB
 
 	//set height and width of capture frame
 	capture.set(CV_CAP_PROP_FRAME_WIDTH,600);

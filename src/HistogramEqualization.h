@@ -9,7 +9,7 @@
 #define SRC_HISTOGRAMEQUALIZATION_H_
 
 
-void histogramEqualization();
+void histogramEqualization(int camera);
 
 
 #endif /* SRC_HISTOGRAMEQUALIZATION_H_ */

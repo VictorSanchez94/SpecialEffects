@@ -5,13 +5,13 @@ using namespace cv;
 
 /*Metodo que reduce el numero de colores de cada frame capturado
  * por la webcam creando un efecto de poster. */
-void Poster(int numLevels) {
+void Poster(int camera, int numLevels) {
 	const int ARRAY_SIZE = 256;
 	int levels[numLevels];
 	float jump = 255/numLevels;
 
 	VideoCapture capture;
-	capture.open(0); //0 es la webcam integrada y 1 es la webcam USB
+	capture.open(camera); //0 es la webcam integrada y 1 es la webcam USB
 
 	//set height and width of capture frame
 	capture.set(CV_CAP_PROP_FRAME_WIDTH,320);

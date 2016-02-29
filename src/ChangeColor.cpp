@@ -9,9 +9,9 @@ using namespace cv;
  * color. Dependiendo de la tecla que se pulse se cambiara a un color
  * o a otro. */
 
-void changeFaceColor(char color) {
+void changeFaceColor(int camera, char color) {
 	VideoCapture capture;
-	capture.open(0); //0 es la webcam integrada y 1 es la webcam USB
+	capture.open(camera); //0 es la webcam integrada y 1 es la webcam USB
 
 	//set height and width of capture frame
 	capture.set(CV_CAP_PROP_FRAME_WIDTH,320);

@@ -9,7 +9,7 @@
 #define SRC_SALTANDPEPPER_H_
 
 
-void saltAndPepper(int percent);
+void saltAndPepper(int camera, int percent);
 
 
 #endif /* SRC_SALTANDPEPPER_H_ */

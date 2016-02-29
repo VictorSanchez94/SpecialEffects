@@ -4,6 +4,6 @@
 #include<opencv2/opencv.hpp>
 #include"SkinDetector.h"
 
-void changeFaceColor(char color);
+void changeFaceColor(int camera, char color);
 
 #endif

@@ -7,6 +7,6 @@
 using namespace std;
 using namespace cv;
 
-	void Poster(int levels);
+	void Poster(int camera, int levels);
 
 #endif

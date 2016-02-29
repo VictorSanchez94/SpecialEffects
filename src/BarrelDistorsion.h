@@ -3,8 +3,10 @@
 
 #include<opencv2/opencv.hpp>
 
-void barrelDistorsion(double Cx,double Cy,double kx,double ky);
+using namespace cv;
 
-IplImage* barrelDistorsionAux(IplImage* img, double Cx,double Cy,double kx,double ky);
+void barrelDistorsion(int camera, double k);
+
+Mat barrelDistorsionAux(Mat img, double Cx,double Cy,double kx,double ky);
 
 #endif

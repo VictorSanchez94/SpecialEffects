@@ -9,9 +9,9 @@ using namespace cv;
  * y si se pulsa la letra 'b' la imagen se muestra en blanco y
  * negro. */
 
-void histogramEqualization() {
+void histogramEqualization(int camera) {
 	VideoCapture capture;
-	capture.open(1); //0 es la webcam integrada y 1 es la webcam USB
+	capture.open(camera); //0 es la webcam integrada y 1 es la webcam USB
 
 	//set height and width of capture frame
 	capture.set(CV_CAP_PROP_FRAME_WIDTH,320);
