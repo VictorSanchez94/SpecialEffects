@@ -3,23 +3,22 @@
 using namespace std;
 using namespace cv;
 
+/* Metodo que implementa el efecto de distorsion de barril y de
+ * distorsion de cojin. Dependiendo del parametro k se acentua
+ * uno u otro. */
 void barrelDistorsion(int camera, double k) {
 	VideoCapture capture;
-	//open capture object at location zero (default location for webcam)
-
 	capture.open(camera);
 
-	//set height and width of capture frame
-	capture.set(CV_CAP_PROP_FRAME_WIDTH, 320);
-	capture.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
+	capture.set(CV_CAP_PROP_FRAME_WIDTH, 600);
+	capture.set(CV_CAP_PROP_FRAME_HEIGHT, 400);
 
 	double Cx, Cy;
 
 	Mat cameraFeed, output;
-
+	bool end = false;
 	char key = 0;
-	while(1){
-		//store image to matrix
+	while(!end){
 		capture.read(cameraFeed);
 		imshow("Real Image", cameraFeed);
 
@@ -31,9 +30,11 @@ void barrelDistorsion(int camera, double k) {
 
 		key = cv::waitKey(1);
 		switch (key){
-
 			case 27:
-				exit(0);
+				//exit(0);
+				destroyAllWindows();
+				end = true;
+				break;
 			case 109:			//m -> mas distorsion
 				k = k + 0.00001;
 				break;
@@ -52,23 +53,6 @@ Mat barrelDistorsionAux(Mat img, double Cx, double Cy, double kx, double ky) {
 
     int w = img.cols;
     int h = img.rows;
-
-    /*float r;
-    for (int y = 0; y < h; y++) {
-        for (int x = 0; x < w; x++) {
-        	r = sqrt(pow((x-Cx),2) + pow((y-Cy),2));
-            //mapx.at<float>(y,x) = Cx+(x-Cx)*(1+kx*((x-Cx)*(x-Cx)+(y-Cy)*(y-Cy)));
-        	mapx.at<float>(y,x) = Cy + (x-Cx) * (1 + kx*pow(r,2));
-        	//mapy.at<float>(y,x) = Cx + (y-Cy) * (1 + ky*pow(r,2));
-        }
-    }
-    for (int y = 0;y < h; y++) {
-        for (int x = 0; x < w; x++) {
-        	//mapy.at<float>(y,x) = Cy+(y-Cy)*(1+ky*((x-Cx)*(x-Cx)+(y-Cy)*(y-Cy)));
-        	//mapy.at<float>(y,x) = Cy + (y-Cy) * (1 + ky * pow((y-Cy),2));
-        	mapy.at<float>(y,x) = Cx + (y-Cy) * (1 + ky*pow(r,2));
-        }
-    }*/
 
     for (int y = 0; y < h; y++) {
         int ty= y-Cy;

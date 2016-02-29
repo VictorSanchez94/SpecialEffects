@@ -13,20 +13,17 @@ void changeFaceColor(int camera, char color) {
 	VideoCapture capture;
 	capture.open(camera); //0 es la webcam integrada y 1 es la webcam USB
 
-	//set height and width of capture frame
-	capture.set(CV_CAP_PROP_FRAME_WIDTH,320);
-	capture.set(CV_CAP_PROP_FRAME_HEIGHT,480);
+	capture.set(CV_CAP_PROP_FRAME_WIDTH,600);
+	capture.set(CV_CAP_PROP_FRAME_HEIGHT,400);
 
 	Mat cameraFeed;
 	SkinDetector mySkinDetector;
 	Mat skinMat, HSVMat, output;
 
-	//start an infinite loop where webcam feed is copied to cameraFeed matrix
-	//all of our operations will be performed within this loop
 	char key = 0;
-	while(1){
+	bool end = false;
+	while(!end){
 
-		//store image to matrix
 		capture.read(cameraFeed);
 		imshow("REAL", cameraFeed);
 
@@ -85,7 +82,9 @@ void changeFaceColor(int camera, char color) {
 				color = 'y';
 				break;
 			case 27:
-				exit(0);
+				destroyAllWindows();
+				end = true;
+				break;
 		}
 	}
 }

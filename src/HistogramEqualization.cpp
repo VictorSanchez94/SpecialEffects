@@ -13,20 +13,15 @@ void histogramEqualization(int camera) {
 	VideoCapture capture;
 	capture.open(camera); //0 es la webcam integrada y 1 es la webcam USB
 
-	//set height and width of capture frame
-	capture.set(CV_CAP_PROP_FRAME_WIDTH,320);
-	capture.set(CV_CAP_PROP_FRAME_HEIGHT,480);
+	capture.set(CV_CAP_PROP_FRAME_WIDTH,600);
+	capture.set(CV_CAP_PROP_FRAME_HEIGHT,400);
 
 	Mat cameraFeed, output;
 	char key = 0;
 	bool color = true;
 	vector<Mat> channels;
-
-	//start an infinite loop where webcam feed is copied to cameraFeed matrix
-	//all of our operations will be performed within this loop
-	while(1){
-
-		//store image to matrix
+	bool end = false;
+	while(!end){
 		capture.read(cameraFeed);
 		imshow("REAL", cameraFeed);
 		if(color){
@@ -44,6 +39,8 @@ void histogramEqualization(int camera) {
 
 		key = cv::waitKey(1);
 		if(key==27){
+			destroyAllWindows();
+			end = true;
 			break;
 		}else if(key=='c'){
 			color = true;
