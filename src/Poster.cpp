@@ -39,8 +39,20 @@ void Poster(int camera, int numLevels) {
 		imshow("Poster Image", cameraFeed);
 
 		key = cv::waitKey(1);
-		if(key == 27){
-			break;
+		switch (key){
+
+			case 27:
+				exit(0);
+			case 109:			//m -> mas colores
+				numLevels++;
+				jump = 255/numLevels;
+				break;
+			case 108:			//l -> menos distorsion
+				if(numLevels > 1){
+					numLevels--;
+					jump = 255/numLevels;
+				}
+				break;
 		}
 	}
 
