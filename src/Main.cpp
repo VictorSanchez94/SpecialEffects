@@ -14,9 +14,10 @@ int main(int argc, char *argv[]) {
 	cout << "\t-1: Efecto alien." << endl;
 	cout << "\t-2: Efecto poster." << endl;
 	cout << "\t-3: Distorsión de barril." << endl;
-	cout << "\t-4: Aumento del contraste." << endl;
-	cout << "\t-5: Ecualización del histograma." << endl;
-	cout << "\t-6: Inserción de ruido de 'sal y pimienta'.\n" << endl;
+	cout << "\t-4: Distorsión de cojín." << endl;
+	cout << "\t-5: Aumento del contraste." << endl;
+	cout << "\t-6: Ecualización del histograma." << endl;
+	cout << "\t-7: Inserción de ruido de 'sal y pimienta'.\n" << endl;
 	cout << "ELECCIÓN: ";
 
 	int key;
@@ -30,10 +31,12 @@ int main(int argc, char *argv[]) {
 	}else if(key == 3){
 		barrelDistorsion(CAMERA, 0.00001);
 	}else if(key == 4){
-		contrast(CAMERA, 3.2);
+		barrelDistorsion(CAMERA,-0.000002);
 	}else if(key == 5){
-		histogramEqualization(CAMERA);
+		contrast(CAMERA, 3.2);
 	}else if(key == 6){
+		histogramEqualization(CAMERA);
+	}else if(key == 7){
 		saltAndPepper(CAMERA, 3);
 	}
 

@@ -47,7 +47,7 @@ void Poster(int camera, int numLevels) {
 				numLevels++;
 				jump = 255/numLevels;
 				break;
-			case 108:			//l -> menos distorsion
+			case 108:			//l -> menos colores
 				if(numLevels > 1){
 					numLevels--;
 					jump = 255/numLevels;
