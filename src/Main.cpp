@@ -6,7 +6,7 @@
 #include"SaltAndPepper.h"
 #include"HistogramEqualization.h"
 
-int main(int argc, char *argv[]) {
+/*int main(int argc, char *argv[]) {
 	int CAMERA = 0;
 
 	cout << "Elija efecto:" << endl;
@@ -40,4 +40,4 @@ int main(int argc, char *argv[]) {
 		saltAndPepper(CAMERA, 3);
 	}
 
-}
+}*/
