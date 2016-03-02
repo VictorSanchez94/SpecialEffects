@@ -11,7 +11,7 @@
 using namespace std;
 using namespace cv;
 
-void contrast(int camera, double alpha);
+void contrast(int camera, double alpha, bool automatic);
 
 
 #endif /* SRC_CONTRAST_H_ */

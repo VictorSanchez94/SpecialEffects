@@ -6,7 +6,7 @@ using namespace cv;
 /*Metodo que incrementa el contraste de cada frame capturado
  * por la webcam. Dependiendo del parametro alpha habra mas
  * o menos contraste. */
-void contrast(int camera, double alpha) {
+void contrast(int camera, double alpha, bool automatic) {
 	VideoCapture capture;
 	capture.open(camera); //0 es la webcam integrada y 1 es la webcam USB
 
@@ -17,10 +17,29 @@ void contrast(int camera, double alpha) {
 
 	char key = 0;
 	bool end = false;
+	String s;
 	while(!end){
 		capture.read(cameraFeed);
 		imshow("Real", cameraFeed);
 		output = cameraFeed;
+
+		if(automatic){
+			double num = sum(cameraFeed)[0];
+			num = num/(cameraFeed.cols*cameraFeed.rows);
+			if(num>200){
+				alpha = 0.001;
+				s = "Por arriba";
+			}else if(num<50){
+				s = "Por abajo";
+				alpha = 2;
+			}else{
+				s = "Por ninguno";
+				alpha = 1;
+			}
+
+		}else{
+			alpha = 1;
+		}
 
 		for(int x=0; x < cameraFeed.rows; x++){
 			for(int y=0; y < cameraFeed.cols; y++){
@@ -31,7 +50,8 @@ void contrast(int camera, double alpha) {
 				output.at<Vec3b>(x,y) = p;
 			}
 		}
-		imshow("Contrast", output);
+
+		imshow(s, output);
 
 		key = cv::waitKey(1);
 		switch (key){
