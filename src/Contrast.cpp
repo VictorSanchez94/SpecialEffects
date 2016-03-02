@@ -17,6 +17,7 @@ void contrast(int camera, double alpha, bool automatic) {
 
 	char key = 0;
 	bool end = false;
+	vector<Mat> channels;
 	String s;
 	while(!end){
 		capture.read(cameraFeed);
@@ -24,21 +25,13 @@ void contrast(int camera, double alpha, bool automatic) {
 		output = cameraFeed;
 
 		if(automatic){
-			double num = sum(cameraFeed)[0];
-			num = num/(cameraFeed.cols*cameraFeed.rows);
-			if(num>200){
-				alpha = 0.001;
-				s = "Por arriba";
-			}else if(num<50){
-				s = "Por abajo";
-				alpha = 2;
-			}else{
-				s = "Por ninguno";
-				alpha = 1;
-			}
+			cvtColor(cameraFeed, output, CV_BGR2YCrCb);
+			split(output,channels);
+			equalizeHist(channels[0], channels[0]);
+			merge(channels,output);
+			cvtColor(output, output, CV_YCrCb2BGR);
+			imshow("Automatic Contrast", output);
 
-		}else{
-			alpha = 1;
 		}
 
 		for(int x=0; x < cameraFeed.rows; x++){
@@ -51,7 +44,10 @@ void contrast(int camera, double alpha, bool automatic) {
 			}
 		}
 
-		imshow(s, output);
+		if(!automatic){
+			imshow("Variable Contrast", output);
+		}
+
 
 		key = cv::waitKey(1);
 		switch (key){

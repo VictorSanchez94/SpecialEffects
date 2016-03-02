@@ -10,7 +10,7 @@
 /*Clase principal que despliega el menu que permite elegir entre los diferentes
  * efectos implementados para esta practica. */
 int main(int argc, char *argv[]) {
-	int CAMERA = 1;
+	int CAMERA = 0;
 
 	int key;
 	while(1){
@@ -21,9 +21,10 @@ int main(int argc, char *argv[]) {
 		cout << "\t-3: Distorsión de barril." << endl;
 		cout << "\t-4: Distorsión de cojín." << endl;
 		cout << "\t-5: Aumento del contraste." << endl;
-		cout << "\t-6: Ecualización del histograma." << endl;
-		cout << "\t-7: Inserción de ruido de 'sal y pimienta'." << endl;
-		cout << "\t-8: Inserción de bocadillo de comic.\n" << endl;
+		cout << "\t-6: Contraste automatico." << endl;
+		cout << "\t-7: Ecualización del histograma." << endl;
+		cout << "\t-8: Inserción de ruido de 'sal y pimienta'." << endl;
+		cout << "\t-9: Inserción de bocadillo de comic.\n" << endl;
 		cout << "ELECCIÓN: ";
 
 		cin >> key;
@@ -39,12 +40,14 @@ int main(int argc, char *argv[]) {
 		}else if(key == 4){
 			barrelDistorsion(CAMERA,-0.000002);
 		}else if(key == 5){
-			contrast(CAMERA, 3.2, true);
+			contrast(CAMERA, 3.2, false);
 		}else if(key == 6){
-			histogramEqualization(CAMERA);
+			contrast(CAMERA, 3.2, true);
 		}else if(key == 7){
-			saltAndPepper(CAMERA, 3);
+			histogramEqualization(CAMERA);
 		}else if(key == 8){
+			saltAndPepper(CAMERA, 3);
+		}else if(key == 9){
 			comic(CAMERA, "Hola profe!");
 		}
 	}
