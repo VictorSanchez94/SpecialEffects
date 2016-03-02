@@ -25,7 +25,7 @@ void saltAndPepper(int camera, int percent) {
 		output = cameraFeed;
 
 		int numPixels = cameraFeed.rows*cameraFeed.cols;
-		for(int i=0; i<numPixels*percent/100; i++){
+		for(int i=0; i<numPixels*percent/100; i = i+2){
 			int xRandSalt = rand() % cameraFeed.rows;
 			int yRandSalt = rand() % cameraFeed.cols;
 			int xRandPepper = rand() % cameraFeed.rows;
